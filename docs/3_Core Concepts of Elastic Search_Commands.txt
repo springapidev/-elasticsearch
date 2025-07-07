@@ -1,0 +1,81 @@
+PUT /blog
+
+POST /blog/_doc
+{
+  "title": "Getting started with Elasticsearch",
+  "author": "Samiun",
+  "tags": ["search", "elasticsearch"],
+  "published": "2025-07-04"
+}
+
+GET /blog/_search
+{
+  "_source": false
+}
+
+PUT /blog/_doc/1
+{
+  "title": "Mastering Elasticsearch",
+  "author": "Samiun",
+  "tags": ["advanced", "lucene"],
+  "published": "2025-07-01"
+}
+
+GET /blog/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /blog/_search
+{
+  "query": {
+    "match": {
+      "title": "elasticsearch"
+    }
+  }
+}
+
+PUT /blog/_doc/1
+{
+  "title": "Updated Title",
+  "author": "Samiun",
+  "tags": ["update"],
+  "published": "2025-07-04"
+}
+
+POST /blog/_update/1
+{
+  "doc": {
+    "tags": ["update", "patched"]
+  }
+}
+
+POST /blog/_update/1
+{
+  "script": {
+    "source": "ctx._source.views = params.count",
+    "lang": "painless",
+    "params": {
+      "count": 1500
+    }
+  }
+}
+
+POST /_analyze
+{
+  "analyzer": "standard",
+  "text": "Elasticsearch is fast and scalable"
+}
+
+POST /blog/_termvectors/1
+{
+  "fields": ["title"],
+  "term_statistics": true,
+  "field_statistics": true
+}
+
+GET /blog/_segments
+
+POST /blog/_refresh
